@@ -12,19 +12,30 @@ npm i @nestixis/nestjs-meilisearch
 To register the module in your application, you can use the `MeilisearchSdkModule.registerAsync` method with a factory pattern:
 
 ```typescript
-import { MeilisearchSdkModule } from "@nestixis/nestjs-meilisearch";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { MeilisearchSdkModule } from '@nestixis/nestjs-meilisearch';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
-MeilisearchSdkModule.registerAsync({
-  imports: [ConfigModule],
-  useFactory: (configService: ConfigService) => ({
-    auth: {
-      url: configService.get<string>('MEILISEARCH_URL'),
-      key: configService.get<string>('MEILISEARCH_AUTH_KEY'),
-    },
-  }),
-  inject: [ConfigService],
-});
+@Module({
+  imports: [
+    MeilisearchSdkModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        auth: {
+          url: configService.get<string>('MEILISEARCH_URL'),
+          key: configService.get<string>('MEILISEARCH_AUTH_KEY'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+
 ```
 
 ## Usage
