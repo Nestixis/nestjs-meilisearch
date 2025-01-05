@@ -1,4 +1,4 @@
-# nestjs-meilisearch
+# NestJS Meilisearch
 
 ## Installation
 
